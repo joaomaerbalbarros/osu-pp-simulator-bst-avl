@@ -1,76 +1,84 @@
-# Árvores no Mundo Real: jogadas do osu! com BST e AVL
+# Trees in the Real World: osu! plays in a BST and an AVL tree
 
-Trabalho prático de Algoritmos e Estruturas de Dados (UFTM).
-Aluno: João Maerbal Nunes Barros.
+Assignment for the Algorithms and Data Structures course (UFTM).
+Author: João Maerbal Nunes Barros.
 
-O programa organiza as 200 melhores jogadas de um perfil do osu! em uma
-Árvore Binária de Busca (BST) e em uma Árvore AVL, com a chave sendo o ID do
-beatmap. Ele permite inserir, buscar e remover jogadas, fazer os três
-percursos, simular quantos pp uma jogada nova acrescentaria ao perfil e
-comparar o desempenho das duas árvores.
+The program loads the 200 top plays of an osu! profile into a Binary Search
+Tree (BST) and an AVL tree, keyed by beatmap ID. It supports inserting,
+searching and removing plays, the three traversals, a pp simulator for a new
+play and a performance comparison between the two trees.
 
-Vídeo de apresentação: https://www.youtube.com/watch?v=bza74MyH1AQ
+Presentation video (in Portuguese): https://www.youtube.com/watch?v=bza74MyH1AQ
 
-## Como compilar e rodar
+## Build and run
 
-Requer apenas `gcc` e a biblioteca padrão de C. Rode a partir desta pasta,
-porque o programa lê `jogadas_osu.csv` do diretório atual.
+Requires only `gcc` and the C standard library. Run it from this folder,
+because the program reads `jogadas_osu.csv` from the current directory.
 
 ```bash
 gcc -fsanitize=address -g -Wall -o trabalho trabalho.c
 ./trabalho
 ```
 
-O menu oferece:
+The menu (in Portuguese) offers:
 
-1. Inserir jogada
-2. Buscar jogada pelo ID
-3. Remover jogada pelo ID
-4. Percursos (em ordem, pré-ordem, pós-ordem)
-5. Altura das árvores
-6. Simular jogada de x pp
-7. Experimento comparativo
+1. Insert a play
+2. Search a play by ID
+3. Remove a play by ID
+4. Traversals (in-order, pre-order, post-order)
+5. Tree heights
+6. Simulate a play worth x pp
+7. Comparison experiment
 
-## Resultados do experimento
+## pp simulator
 
-| Cenário | Árvore | Altura | Comparações (total) | Comparações (média) |
+Given a new play worth `x` pp, the program counts how many plays in the tree
+have at least `x` pp to find the position `n` the new play would take in the
+profile, then applies osu!'s position weight: `x · 0.95^(n−1)`. Since the
+tree is ordered by beatmap ID and not by pp, every node has to be visited.
+
+## Experiment results
+
+| Scenario | Tree | Height | Comparisons (total) | Comparisons (average) |
 |---|---|---|---|---|
-| A: ordem do arquivo | BST | 17 | 1888 | 9,44 |
-| A: ordem do arquivo | AVL | 9 | 1368 | 6,84 |
-| B: IDs em ordem crescente | BST | 200 | 20100 | 100,50 |
-| B: IDs em ordem crescente | AVL | 8 | 1353 | 6,76 |
+| A: file order | BST | 17 | 1888 | 9.44 |
+| A: file order | AVL | 9 | 1368 | 6.84 |
+| B: IDs in ascending order | BST | 200 | 20100 | 100.50 |
+| B: IDs in ascending order | AVL | 8 | 1353 | 6.76 |
 
-No cenário B a BST degenera em lista, e a AVL continua com altura logarítmica.
-A análise completa está no relatório.
+In scenario B the BST degenerates into a linked list, while the AVL tree keeps
+a logarithmic height. The full analysis is in the report.
 
-## Dados
+## Data
 
-`jogadas_osu.csv` contém as 200 jogadas da seção Melhor Performance do perfil
-https://osu.ppy.sh/users/13699780, coletadas em 14/10/2026 pela API oficial do
-osu!. As colunas são nome do beatmap, ID do beatmap, pp (3 casas decimais) e
-data, separadas por `;` e em ordem cronológica.
+`jogadas_osu.csv` holds the 200 plays from the Best Performance section of
+the profile https://osu.ppy.sh/users/13699780, collected on 2026-10-14 through
+the official osu! API. The columns are beatmap name, beatmap ID, pp (3 decimal
+places) and date, separated by `;` and in chronological order.
 
-O script `scripts/coletar_jogadas.py` gera o arquivo novamente. Os dados mudam
-se o jogador fizer jogadas novas; o CSV deste repositório é o usado nos
-resultados do trabalho.
+The script `scripts/coletar_jogadas.py` regenerates the file. The data changes
+whenever the player sets new plays; the CSV in this repository is the one used
+for the results above.
 
-## Estrutura
+## Layout
 
-| Caminho | Conteúdo |
+The code, report and documentation are in Portuguese.
+
+| Path | Contents |
 |---|---|
-| `trabalho.c` | o programa |
-| `jogadas_osu.csv` | os dados |
-| `docs/relatorio.pdf` | relatório entregue |
-| `docs/enunciado.pdf` | enunciado do trabalho |
-| `docs/TRABALHO.md` | proposta, decisões técnicas e plano de etapas |
-| `docs/REFORMULACAO_14-10.md` | mudanças combinadas com o professor em 14/10 (chave = ID) |
-| `docs/DIARIO.md` | Diário de Bordo: erros encontrados e como foram resolvidos |
-| `docs/REVISAO_CODIGO.md` | revisão do código linha por linha |
-| `docs/ROTEIRO_VIDEO.md` | roteiro do vídeo |
-| `scripts/` | script de coleta dos dados |
+| `trabalho.c` | the program |
+| `jogadas_osu.csv` | the data |
+| `docs/relatorio.pdf` | submitted report |
+| `docs/enunciado.pdf` | assignment statement |
+| `docs/TRABALHO.md` | proposal, technical decisions and stage plan |
+| `docs/REFORMULACAO_14-10.md` | changes agreed with the professor on 2026-10-14 (key = ID) |
+| `docs/DIARIO.md` | development log: bugs found and how they were fixed |
+| `docs/REVISAO_CODIGO.md` | line-by-line code review |
+| `docs/ROTEIRO_VIDEO.md` | video script |
+| `scripts/` | data collection script |
 
-## Uso de IA
+## Use of AI
 
-O desenvolvimento contou com IA (Claude, da Anthropic) como apoio, conforme
-permitido pelo professor e declarado no relatório. Os commits feitos com esse
-apoio levam a linha `Co-Authored-By: Claude`.
+Development was assisted by AI (Claude, by Anthropic), as allowed by the
+professor and declared in the report. Commits made with this assistance carry
+the `Co-Authored-By: Claude` trailer.
